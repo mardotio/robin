@@ -3,7 +3,6 @@ package utils
 import (
 	"errors"
 	"fmt"
-	"github.com/joho/godotenv"
 	"log"
 	"os"
 	"strconv"
@@ -15,11 +14,13 @@ const minSecretLength = 32
 var envVars = struct {
 	ApiPort      string
 	ApiJwtSecret string
-}{ApiPort: "API_PORT", ApiJwtSecret: "API_JWT_SECRET"}
+	ApiInDocker  string
+}{ApiPort: "API_PORT", ApiJwtSecret: "API_JWT_SECRET", ApiInDocker: "API_IN_DOCKER"}
 
 type AppConfig struct {
-	Port      int
-	JwtSecret []byte
+	Port        int
+	JwtSecret   []byte
+	ApiInDocker bool
 }
 
 var appConfig *AppConfig
@@ -52,12 +53,7 @@ func (config *AppConfig) setApiJwtSecret(errSlice *[]string) {
 }
 
 func parseEnv() (*AppConfig, error) {
-	dotenvErr := godotenv.Load()
 	var parseErr []string
-
-	if nil != dotenvErr {
-		panic(dotenvErr)
-	}
 
 	config := AppConfig{}
 

@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  api:
+    build:
+      context: ../services/api
+      dockerfile: dev/Dockerfile
+    volumes:
+      - ../services/api/src:/app/src
+      - ../services/api/main.go:/app/main.go
+    environment:
+      - API_JWT_SECRET=${API_JWT_SECRET}
+      - API_PORT=${API_PORT}
+  proxy:
+    image: nginx
+    depends_on:
+      - api
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 3000:3000
