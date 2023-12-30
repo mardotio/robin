@@ -1,0 +1,5 @@
+# IDE files
+.idea/
+
+# App config
+.env*
