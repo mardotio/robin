@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -64,7 +63,7 @@ func parseEnv() (*AppConfig, error) {
 		return &config, nil
 	}
 
-	return nil, errors.New(fmt.Sprintf("\n%s", strings.Join(parseErr[:], "\n")))
+	return nil, fmt.Errorf("\n%s", strings.Join(parseErr[:], "\n"))
 }
 
 func GetAppConfig() *AppConfig {

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/go-chi/render"
+	"log"
 	"net/http"
 	"robin/api/src/utils"
 	"strconv"
@@ -28,5 +29,9 @@ func GetToken(w http.ResponseWriter, r *http.Request) {
 	token, tokenString, _ := utils.GetTokenAuth().Encode(claims.ToClaimsMap(time.Hour * 1))
 
 	render.Status(r, http.StatusOK)
-	render.Render(w, r, GetTokenResponse{Token: tokenString, Expires: jsonEpochTime(token.Expiration())})
+	err := render.Render(w, r, GetTokenResponse{Token: tokenString, Expires: jsonEpochTime(token.Expiration())})
+
+	if nil != err {
+		log.Println(err)
+	}
 }
